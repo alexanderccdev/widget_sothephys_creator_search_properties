@@ -20,19 +20,8 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
 import AppHeader from '@/components/common/AppHeader.vue'
 import NavigationTabs from '@/components/common/NavigationTabs.vue'
-import { useProperties } from '@/composables/useProperties'
 
-const { fetchProperties } = useProperties()
-
-onMounted(() => {
-  debugger
-  const defaultFilters = {
-    ambientes: 4
-  }
-  fetchProperties(defaultFilters)
-})
-
+// Los filtros ahora se manejan en SearchCriteria.vue
 </script>
