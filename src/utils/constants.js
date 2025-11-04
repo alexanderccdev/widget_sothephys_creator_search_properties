@@ -43,3 +43,8 @@ export const NUMBER_FORMAT = {
   locale: 'es-AR',
   currency: 'USD'
 }
+
+export const API = {
+  PROXY_URL: 'https://micreditodev.com/upload.php',
+  ZOHO_BASE_URL: 'https://www.zohoapis.com/creator/custom/sirargentina/'
+}

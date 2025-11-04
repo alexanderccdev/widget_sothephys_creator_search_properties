@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { API } from '@/utils/constants'
 
 export const usePropertyStore = defineStore('property', () => {
   // State
@@ -155,7 +156,7 @@ export const usePropertyStore = defineStore('property', () => {
 
   // Getters
   const totalProperties = computed(() => properties.value.length)
-  
+
   const averagePrice = computed(() => {
     if (properties.value.length === 0) return 0
     const total = properties.value.reduce((sum, prop) => sum + prop.price, 0)
@@ -188,6 +189,59 @@ export const usePropertyStore = defineStore('property', () => {
     selectedProperty.value = null
   }
 
+  async function fetchProperties(filters = "") {
+    loading.value = true
+    error.value = null
+
+    // 1. Construir la URL con Query Parameters a partir de los filtros
+    // Ejemplo: ?ambientes=4&precioMax=500000
+    const queryParams = new URLSearchParams(filters).toString()
+    const url = `${API.PROXY_URL}?${queryParams}`
+
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          // Headers necesarios para tu proxy PHP:
+          'publickey': "ST0kRPbAWz92MSftdWgghVZNf",
+          'baseurl': API.ZOHO_BASE_URL,
+          'functionname': "search_properties",
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`)
+      }
+
+      const result = await response.json()
+
+      // 2. Verificar la respuesta de la función de Creator
+      if (result.success && Array.isArray(result.data)) {
+        // Mapear los datos de Zoho a la estructura de tu store (si es necesario)
+        properties.value = result.data.map(item => ({
+          id: item.ID_PROPIEDAD, // Asegúrate de usar el campo ID correcto de Zoho
+          address: item.Direccion_Completa,
+          price: item.Precio_Venta, // O el campo que contenga el precio
+          area: item.Superficie_Cubierta_M2, // Superficie
+          rooms: item.Ambientes, // Ambientes
+          coordinates: [item.Latitud, item.Longitud], // Asumiendo que vienen lat/long
+          // ... Mapear todos los campos restantes de Zoho
+        }))
+      } else {
+        // Error reportado por la función de Creator
+        throw new Error(result.message || 'La función de Creator devolvió un error.')
+      }
+
+    } catch (err) {
+      console.error('Fallo al obtener propiedades:', err)
+      error.value = 'No se pudo cargar la lista de propiedades. Intente más tarde.'
+      properties.value = [] // Vaciar la lista en caso de error
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     // State
     properties,
@@ -202,6 +256,7 @@ export const usePropertyStore = defineStore('property', () => {
     propertiesWithPricePerSqm,
     // Actions
     selectProperty,
-    clearSelection
+    clearSelection,
+    fetchProperties
   }
 })

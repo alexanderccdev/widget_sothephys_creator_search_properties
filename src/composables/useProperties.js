@@ -5,6 +5,12 @@ import { formatPrice, formatArea, formatPricePerSqm, calculatePricePerSqm } from
 export function useProperties() {
   const propertyStore = usePropertyStore()
 
+  // --- NUEVAS PROPIEDADES EXPUESTAS ---
+  const loading = computed(() => propertyStore.loading)
+  const error = computed(() => propertyStore.error)
+  const fetchProperties = (filters) => propertyStore.fetchProperties(filters)
+  // ------------------------------------
+
   const properties = computed(() => propertyStore.properties)
   
   const formattedProperties = computed(() => {
@@ -36,6 +42,9 @@ export function useProperties() {
     properties,
     formattedProperties,
     totalProperties,
+    fetchProperties,
+    loading,
+    error,
     averagePrice,
     averageArea,
     formattedAveragePrice,
