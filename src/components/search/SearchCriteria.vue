@@ -40,7 +40,6 @@
               buttonLayout="horizontal"
               :step="1"
               class="w-full"
-              @update:modelValue="applyFilters"
             >
               <template #incrementbuttonicon>
                 <span class="pi pi-plus" />
@@ -51,22 +50,24 @@
             </InputNumber>
           </div>
 
-          <!-- Filtro de Presupuesto con Slider -->
+          <!-- Filtro de Presupuesto con Range Slider -->
           <div class="space-y-2">
             <label class="flex items-center justify-between text-sm font-semibold text-blue-800">
               <span class="flex items-center">
                 <i class="pi pi-filter text-blue-600 mr-2"></i>
                 Presupuesto:
               </span>
-              <span class="text-blue-600 font-normal">{{ formatPrice(filters.budget) }}</span>
+              <span class="text-blue-600 font-normal">
+                {{ formatPrice(filters.budgetRange[0]) }} - {{ formatPrice(filters.budgetRange[1]) }}
+              </span>
             </label>
             <Slider
-              v-model="filters.budget"
+              v-model="filters.budgetRange"
               :min="100000"
               :max="1000000"
               :step="50000"
+              :range="true"
               class="w-full"
-              @change="applyFilters"
             />
             <div class="flex justify-between text-xs text-gray-600">
               <span>{{ formatPrice(100000) }}</span>
@@ -105,18 +106,16 @@ const { fetchProperties, loading } = useProperties()
 // Estado local de los filtros
 const filters = ref({
   rooms: SEARCH_CRITERIA.rooms,
-  budget: SEARCH_CRITERIA.budget
+  budgetRange: [100000, SEARCH_CRITERIA.budget] // [min, max]
 })
 
-// Función para aplicar filtros
+// Función para aplicar filtros (solo se ejecuta al hacer click en el botón)
 function applyFilters() {
   const apiFilters = {
     ambientes: filters.value.rooms,
-    precioMax: filters.value.budget
+    precioMin: filters.value.budgetRange[0],
+    precioMax: filters.value.budgetRange[1]
   }
   fetchProperties(apiFilters)
 }
-
-// Aplicar filtros iniciales al montar el componente
-applyFilters()
 </script>
