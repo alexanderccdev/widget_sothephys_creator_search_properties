@@ -220,12 +220,12 @@ export const usePropertyStore = defineStore('property', () => {
       if (result.success && Array.isArray(result.data)) {
         // Mapear los datos de Zoho a la estructura de tu store (si es necesario)
         properties.value = result.data.map(item => ({
-          id: item.ID_PROPIEDAD, // Asegúrate de usar el campo ID correcto de Zoho
-          address: item.Direccion_Completa,
-          price: item.Precio_Venta, // O el campo que contenga el precio
-          area: item.Superficie_Cubierta_M2, // Superficie
-          rooms: item.Ambientes, // Ambientes
-          coordinates: [item.Latitud, item.Longitud], // Asumiendo que vienen lat/long
+          id: item.id, // Asegúrate de usar el campo ID correcto de Zoho
+          address: item.address,
+          price: item.price, // O el campo que contenga el precio
+          area: item.area, // Superficie
+          rooms: item.rooms, // Ambientes
+          coordinates: coordinates, // Asumiendo que vienen lat/long
           // ... Mapear todos los campos restantes de Zoho
         }))
       } else {
