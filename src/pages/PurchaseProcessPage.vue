@@ -255,11 +255,11 @@
         proceso de compra.
       </p>
       <div class="mb-4">
-        <h4 class="font-semibold text-lg mb-3">Patricio Casares</h4>
+        <h4 class="font-semibold text-lg mb-3">Ramón García Llorente</h4>
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <div class="flex items-center gap-2 text-sm opacity-90">
             <i class="pi pi-envelope"></i>
-            <span>pcasares@argentinasothebysrealty.com</span>
+            <span>rgarciallorente@argentinasothebysrealty.com</span>
           </div>
           <div class="flex items-center gap-2 text-sm opacity-90">
             <i class="pi pi-phone"></i>

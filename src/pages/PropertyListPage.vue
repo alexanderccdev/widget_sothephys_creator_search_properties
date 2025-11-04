@@ -65,7 +65,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue' // Importar watch y onMounted
+import { ref, watch } from 'vue'
 import PropertyCard from '@/components/property/PropertyCard.vue'
 import PropertyDetailDialog from '@/components/property/PropertyDetailDialog.vue'
 import { useProperties } from '@/composables/useProperties'
@@ -121,11 +121,6 @@ function applyFilters() {
     // Llama a la acción Pinia con los parámetros listos para el Proxy/Zoho
     fetchProperties(apiParams)
 }
-
-// 6. Ejecutar la búsqueda inicial al montar
-onMounted(() => {
-    applyFilters()
-})
 
 // 7. Observar cambios en los filtros para aplicar la búsqueda
 watch(currentFilters.value, () => {
