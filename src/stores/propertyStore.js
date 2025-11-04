@@ -225,7 +225,7 @@ export const usePropertyStore = defineStore('property', () => {
           price: item.price, // O el campo que contenga el precio
           area: item.area, // Superficie
           rooms: item.rooms, // Ambientes
-          coordinates: coordinates, // Asumiendo que vienen lat/long
+          coordinates: item.coordinates, // Asumiendo que vienen lat/long
           // ... Mapear todos los campos restantes de Zoho
         }))
       } else {
