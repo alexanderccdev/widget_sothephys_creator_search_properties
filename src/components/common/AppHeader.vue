@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center py-6">
         <div class="flex items-center">
-          <i class="pi pi-building text-blue-600 text-4xl mr-3"></i>
+          <img :src="logo" alt="Sothepys" class="h-12 w-auto mr-6" />
           <div>
             <h1 class="text-2xl font-bold text-gray-900">
               {{ title }}
@@ -26,6 +26,7 @@
 <script setup>
 import { APP_NAME, APP_SUBTITLE } from '@/utils/constants'
 import { useProperties } from '@/composables/useProperties'
+import logo from '@/assets/logo.jpeg'
 
 const { totalProperties } = useProperties()
 
