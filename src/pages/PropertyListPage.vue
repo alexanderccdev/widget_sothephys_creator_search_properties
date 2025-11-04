@@ -7,8 +7,22 @@
           <span class="font-semibold">Filtros</span>
         </div>
         <div class="flex flex-wrap gap-3">
-          <select 
-            v-model="currentFilters.priceRange" 
+          <select
+            v-model="currentFilters.ambientes"
+            class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            :disabled="loading"
+          >
+            <option :value="1">1 ambiente</option>
+            <option :value="2">2 ambientes</option>
+            <option :value="3">3 ambientes</option>
+            <option :value="4">4 ambientes</option>
+            <option :value="5">5 ambientes</option>
+            <option :value="6">6 ambientes</option>
+            <option :value="7">7+ ambientes</option>
+          </select>
+
+          <select
+            v-model="currentFilters.priceRange"
             class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             :disabled="loading"
           >
@@ -17,9 +31,9 @@
             <option>USD 400.000 - USD 500.000</option>
             <option>Más de USD 500.000</option>
           </select>
-          
-          <select 
-            v-model="currentFilters.sortBy" 
+
+          <select
+            v-model="currentFilters.sortBy"
             class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             :disabled="loading"
           >
@@ -82,10 +96,9 @@ const {
 
 // 2. Estado local para los filtros de la interfaz
 const currentFilters = ref({
+    ambientes: 4, // Valor inicial configurable
     priceRange: 'Todos los precios', // El valor por defecto de tu select
-    sortBy: 'Relevancia',
-    // Aquí puedes añadir otros filtros de tu interfaz (ej: ambientes, ubicación)
-    ambientes: 4 // Valor inicial basado en la imagen de diseño
+    sortBy: 'Relevancia'
 })
 
 // 3. Variables de Modal
@@ -96,7 +109,7 @@ const selectedProperty = ref(null)
 function mapFiltersToApiParams() {
     // Mapea los valores del SELECT a los nombres de parámetros que espera tu función Deluge
     let apiFilters = {
-        ambientes: 4 // Hardcodeado por ahora, pero debería venir de otro select
+        ambientes: currentFilters.value.ambientes // Ahora es dinámico
     }
 
     // Lógica para mapear el rango de precios
@@ -106,9 +119,9 @@ function mapFiltersToApiParams() {
         'Más de USD 500.000': { precioMin: 500000 },
         'Todos los precios': {}
     }
-    
+
     const mappedPrice = priceMap[currentFilters.value.priceRange] || {};
-    
+
     // Fusionar todos los filtros
     Object.assign(apiFilters, mappedPrice);
 
